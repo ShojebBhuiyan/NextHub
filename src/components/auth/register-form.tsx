@@ -18,11 +18,14 @@ import FormError from "@/components/form-error";
 import { useState, useTransition } from "react";
 import { register } from "@/actions/register";
 import FormSuccess from "../form-success";
+import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -41,6 +44,7 @@ export function RegisterForm() {
       register(values).then((data) => {
         if (data.success) {
           setSuccess(data?.success);
+          router.push("/login");
         } else {
           setError(data?.error);
         }
@@ -97,7 +101,7 @@ export function RegisterForm() {
                   <Input
                     {...field}
                     placeholder="******"
-                    type="type"
+                    type="password"
                     disabled={isPending}
                   />
                 </FormControl>
