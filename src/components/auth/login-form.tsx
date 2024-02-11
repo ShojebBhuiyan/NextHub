@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import { useState, useTransition } from "react";
 import { login } from "@/actions/login";
+import FormSuccess from "../form-success";
 
 export function LoginForm() {
   const [isPending, startTransition] = useTransition();
@@ -88,7 +89,7 @@ export function LoginForm() {
           />
         </div>
         {error && <FormError message={error} />}
-        {success && <FormError message={success} />}
+        {success && <FormSuccess message={success} />}
         <Button type="submit" className="w-full" disabled={isPending}>
           Login
         </Button>

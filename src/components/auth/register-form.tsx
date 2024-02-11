@@ -16,7 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import { useState, useTransition } from "react";
-import { login } from "@/actions/login";
+import { register } from "@/actions/register";
+import FormSuccess from "../form-success";
 
 export function RegisterForm() {
   const [isPending, startTransition] = useTransition();
@@ -37,7 +38,7 @@ export function RegisterForm() {
       setError(undefined);
       setSuccess(undefined);
 
-      login(values).then((data) => {
+      register(values).then((data) => {
         if (data.success) {
           setSuccess(data?.success);
         } else {
@@ -106,7 +107,7 @@ export function RegisterForm() {
           />
         </div>
         {error && <FormError message={error} />}
-        {success && <FormError message={success} />}
+        {success && <FormSuccess message={success} />}
         <Button type="submit" className="w-full" disabled={isPending}>
           Create an account
         </Button>
