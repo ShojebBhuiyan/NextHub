@@ -15,7 +15,7 @@ export default function FeatureSection() {
             </p>
           </div>
           <div className="flex items-center gap-6 justify-center">
-            <FeatureCard name={""} description={""} />
+            <FeatureCard name={"Build Faster, Together"} description={"Collaborate with built in merge requests, Code review and CI/CD."} />
             <FeatureCard name={""} description={""} />
             <FeatureCard name={""} description={""} />
           </div>
