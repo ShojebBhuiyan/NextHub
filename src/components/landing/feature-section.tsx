@@ -16,8 +16,8 @@ export default function FeatureSection() {
           </div>
           <div className="flex items-center gap-6 justify-center">
             <FeatureCard name={"Build Faster, Together"} description={"Collaborate with built in merge requests, Code review and CI/CD."} />
-            <FeatureCard name={""} description={""} />
-            <FeatureCard name={""} description={""} />
+            <FeatureCard name={"Skill Sorting"} description={"Search and Contribute to Projects that match your skillset"} />
+            <FeatureCard name={"Repository Creation"} description={"Create Repos based on your preference"} />
           </div>
         </div>
       </div>
