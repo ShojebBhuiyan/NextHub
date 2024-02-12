@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 
 export default function HeroSection() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+    <section className="w-full py-12">
       <div className="container px-4 md:px-6">
         <div className="grid items-center gap-4 text-center lg:grid-cols-2 lg:text-left">
           <div className="space-y-4">

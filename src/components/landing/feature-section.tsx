@@ -3,7 +3,7 @@ import FeatureCard from "./feature-card";
 
 export default function FeatureSection() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+    <section className="w-full py-12">
       <div className="container px-4 md:px-6">
         <div className="flex-col items-center gap-4 text-center lg:text-left">
           <div className="space-y-4">
@@ -15,10 +15,27 @@ export default function FeatureSection() {
               learn new languages, and explore innovative tools.
             </p>
           </div>
-          <div className="flex items-center gap-6 justify-center">
-            <Box /><FeatureCard name={"Build Faster, Together"} description={"Collaborate with built in merge requests, Code review and CI/CD."} />
-            <Users /><FeatureCard name={"Skill Sorting"} description={"Search and Contribute to Projects that match your skillset."} />
-            <BookCopy /><FeatureCard name={"Repository Creation"} description={"Create Repos based on your preference."} />
+          <div className="flex items-center gap-6 justify-between mt-10">
+            <FeatureCard
+              icon={<BookCopy />}
+              name={"Repository Creation"}
+              description={
+                "Create and publish repositories based on your preference."
+              }
+            />
+
+            <FeatureCard
+              icon={<Users />}
+              name={"Skill Sorting"}
+              description={
+                "Search and Contribute to Projects that match your skillset."
+              }
+            />
+            <FeatureCard
+              icon={<Box />}
+              name={"Build Faster, Together"}
+              description={"Collaborate with others with chat and whiteboards."}
+            />
           </div>
         </div>
       </div>
