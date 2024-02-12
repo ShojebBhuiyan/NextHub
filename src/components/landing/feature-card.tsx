@@ -8,7 +8,7 @@ interface FeatureCardProps {
 export default function FeatureCard({ name, description }: FeatureCardProps) {
   return (
     <Card className="w-[400px] shadow-md">
-      <CardHeader>{name}</CardHeader>
+      <CardHeader className="font-bold text-xl">{name}</CardHeader>
       <CardContent>{description}</CardContent>
     </Card>
   );
