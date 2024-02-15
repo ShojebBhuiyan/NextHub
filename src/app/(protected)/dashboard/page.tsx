@@ -1,16 +1,13 @@
 import { auth, signOut } from "@/auth";
+import ProjectListings from "@/components/project/project-listings";
 
 export default async function Dashboard() {
-  const session = await auth();
   return (
-    <form
-      action={async () => {
-        "use server";
-
-        await signOut();
-      }}
-    >
-      <button type="submit">Sign out</button>
-    </form>
+    <main>
+      <h1>Dashboard</h1>
+      <div className="flex-col">
+        <ProjectListings />
+      </div>
+    </main>
   );
 }

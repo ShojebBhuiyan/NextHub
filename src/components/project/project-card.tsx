@@ -1,5 +1,10 @@
-import React from "react";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import SkillBadge from "@/components/project/skill-badge";
 
 interface ProjectCardProps {
   name: string;
@@ -13,18 +18,13 @@ export default function ProjectCard({
   skills,
 }: ProjectCardProps) {
   return (
-    <Card className="w-[400px] shadow-md">
-      <CardHeader>{name}</CardHeader>
-      <CardContent>
-        <p>{description}</p>
-        <div>
+    <Card className="w-full shadow-md">
+      <CardHeader className="font-bold text-3xl">{name}</CardHeader>
+      <CardContent className="flex-col space-y-4">
+        <p className="text-2xl">{description}</p>
+        <div className="flex-wrap space-x-4">
           {skills.map((skill) => (
-            <span
-              key={skill}
-              className="text-xs bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-1 mr-2"
-            >
-              {skill}
-            </span>
+            <SkillBadge key={skill} skill={skill} />
           ))}
         </div>
       </CardContent>
