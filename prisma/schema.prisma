@@ -38,6 +38,7 @@ model Account {
 model User {
   id            String    @id @default(cuid())
   name          String?
+  username      String    @unique
   email         String?   @unique
   emailVerified DateTime?
   image         String?
@@ -56,4 +57,6 @@ model Project {
   userId      String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@unique([title, userId])
 }

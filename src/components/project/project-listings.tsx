@@ -13,13 +13,14 @@ export default async function ProjectListings() {
         <h1 className="font-bold text-4xl">Project Listings</h1>
         <Separator />
       </div>
-
       <div className="flex-col space-y-4 w-full">
         {projects?.map((project) => (
           <ProjectCard
             key={project.id}
-            name={project.title}
+            username={project.user.name!}
+            title={project.title}
             description={project.description}
+            imageUrl={project.user.image}
             skills={project.skills}
           />
         ))}

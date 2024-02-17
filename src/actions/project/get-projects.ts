@@ -6,6 +6,14 @@ export async function getProjects() {
   try {
     const projects = await db.project.findMany({
       take: 10,
+      include: {
+        user: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
     });
 
     return projects;
