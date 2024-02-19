@@ -48,7 +48,7 @@ export default function KeyList() {
         <CardContent className="flex-col space-y-4">
           <div className="flex flex-col">
             {keys?.map((key) => (
-              <div className="w-full space-y-2">
+              <div key={key.id} className="w-full space-y-2">
                 <div className="flex justify-between items-center">
                   <p>{key.keyName}</p>
                   <Button
