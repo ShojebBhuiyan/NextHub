@@ -85,71 +85,60 @@ app.post("/repository/create", (req, res) => {
   );
 });
 
-app.get("/repository", (req, res) => {
-  const { username, repoName } = req.body;
-
-  exec(
-    `cd /srv/git/${username}/${repoName}.git && git log --name-status --pretty=format:"{ \"commitHash\": \"%h\", \"commitMessage\": \"%s\" }"`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        res.status(500).send("Error fetching Git repository information");
+// Function to recursively retrieve directory structure
+function getDirectoryStructure(path) {
+  return new Promise((resolve, reject) => {
+    exec(`cd ${repoPath} && git ls-files --stage`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        reject(error || stderr);
         return;
       }
 
-      if (!stdout.trim()) {
-        res.status(404).send("Git repository is empty");
-        return;
-      }
+      const files = stdout
+        .split('\n')
+        .filter(Boolean)
+        .map(line => {
+            const [fileMode, , , fileName] = line.split(/\s+/);
+            return { fileMode, fileName };
+        });
 
-      const commits = stdout.trim().split("\n\n");
-      const filesMap = new Map();
+      const root = { id: "1", name: "root", isFolder: true, items: [] };
+      const structure = { "": root };
 
-      // Parse commit information
-      commits.forEach((commit) => {
-        const commitInfo = JSON.parse(commit);
-        const lines = commit.split("\n");
-        const commitHash = commitInfo.commitHash;
-        const commitMessage = commitInfo.commitMessage;
-        lines.shift(); // Remove the commit info line
-        lines.forEach((line) => {
-          const [status, filePath] = line.trim().split("\t");
-          const file = filesMap.get(filePath) || {
-            name: filePath,
-            isFolder: false,
-            items: [],
-            commitMessage: "",
-            commitHash: "",
-          };
-          file.commitMessage = commitMessage;
-          file.commitHash = commitHash;
-          filesMap.set(filePath, file);
+      files.forEach(({ fileName }) => {
+        const pathItems = fileName.split("/");
+        let currentPath = "";
+        pathItems.forEach(item => {
+            currentPath += item;
+            if (!structure[currentPath]) {
+                structure[currentPath] = {
+                    id: Math.random().toString(36).substr(2, 9),
+                    name: item,
+                    isFolder: true,
+                    items: []
+                };
+                structure[currentPath.substr(0, currentPath.length - item.length)]?.items.push(structure[currentPath]);
+            }
+            currentPath += "/";
         });
       });
 
-      // Build JSON structure
-      const root = { name: "root", isFolder: true, items: [] };
-      filesMap.forEach((file) => {
-        const segments = file.name.split("/");
-        let currentDir = root;
-        for (let i = 0; i < segments.length - 1; i++) {
-          const segment = segments[i];
-          let subDir = currentDir.items.find(
-            (item) => item.name === segment && item.isFolder
-          );
-          if (!subDir) {
-            subDir = { name: segment, isFolder: true, items: [] };
-            currentDir.items.push(subDir);
-          }
-          currentDir = subDir;
-        }
-        currentDir.items.push(file);
-      });
+      resolve(root);
+    });
+  });
+}
 
-      res.json(root);
+// Endpoint to retrieve directory structure
+app.get('/repository/create', async (req, res) => {
+    try {
+        const directoryStructure = await getDirectoryStructure(repoPath);
+        res.json(directoryStructure);
+    } catch (error) {
+        console.error(`Error getting directory structure: ${error}`);
+        res.status(500).send('Internal Server Error');
     }
-  );
 });
+
 
 // Start the server
 app.listen(PORT, () => {
