@@ -4,11 +4,10 @@ import { db } from "@/lib/db";
 
 export async function getProjectsByUserName(name: string) {
   try {
-    const decodedName = decodeURIComponent(name);
     const projects = await db.project.findMany({
       where: {
         user: {
-          name: decodedName,
+          name: name,
         },
       },
       take: 10,

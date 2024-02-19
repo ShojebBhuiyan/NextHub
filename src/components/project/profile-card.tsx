@@ -7,15 +7,16 @@ import {
 } from "@/components/ui/card";
 import SkillBadge from "@/components/project/skill-badge";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface ProfileCardProps {
+  username: string;
   title: string;
   description: string;
   skills: string[];
 }
 
 export default function ProfileCard({
+  username,
   title,
   description,
   skills,
@@ -23,10 +24,7 @@ export default function ProfileCard({
   return (
     <Card className="w-full shadow-md bg-violet-400">
       <CardHeader className="flex justify-between">
-        <Link
-          className="hover:underline"
-          href={``} /// when clicked it should redirect me to project detail page.
-        >
+        <Link className="hover:underline" href={`/${username}/${title}`}>
           {title}
         </Link>
       </CardHeader>
