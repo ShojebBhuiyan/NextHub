@@ -57,6 +57,18 @@ app.post("/repository/create", (req, res) => {
         }
       );
 
+      // Set safe repo
+      exec(
+        `git config --global --add safe.directory ${repoPath}`,
+        (configError, configStdout, configStderr) => {
+          if (configError) {
+            console.error(`Git config error: ${configError}`);
+            res.status(500).send("Error configuring safe repo!");
+            return;
+          }
+        }
+      );
+
       const mappingEntry = `${username}/${repoName}    ${repoPath};\n`;
       fs.appendFile(mappingFilePath, mappingEntry, (err) => {
         if (err) {
