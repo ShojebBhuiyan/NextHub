@@ -42,7 +42,7 @@ export default function ProfileCard({
         </p>
         {description.length > maxLength && (
           <button
-            className="text-blue-600 hover:underline"
+            className="text-violet-900 hover:underline"
             onClick={() => setShowFullDescription(!showFullDescription)}
           >
             {showFullDescription ? "Show less" : "Show more"}
