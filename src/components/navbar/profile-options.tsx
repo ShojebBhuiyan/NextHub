@@ -37,14 +37,21 @@ export default function ProfileOptions({
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
-              <Link href={`/${name}`}>Profile</Link>
+              <Link href={`/${name}`} className="w-full">
+                Profile
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/settings`} className="w-full">
+                Settings
+              </Link>
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => {
               signOut();
             }}
+            className="w-full"
           >
             Sign out
           </DropdownMenuItem>
