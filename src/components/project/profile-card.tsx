@@ -21,7 +21,7 @@ export default function ProfileCard({
   skills,
 }: ProfileCardProps) {
   return (
-    <Card className="w-full shadow-md">
+    <Card className="w-full shadow-md bg-violet-400">
       <CardHeader className="flex justify-between">
         <Link
           className="hover:underline"
