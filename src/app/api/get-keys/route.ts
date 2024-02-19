@@ -14,16 +14,19 @@ export async function POST(req: Request) {
       },
     });
 
-    return {
+    return new Response(JSON.stringify(keys), {
       status: 200,
-      body: keys,
-    };
+      statusText: "OK",
+    });
   } catch (error) {
-    return {
-      status: 500,
-      body: {
+    return new Response(
+      JSON.stringify({
         error: "Something went wrong!",
-      },
-    };
+      }),
+      {
+        status: 500,
+        statusText: "Internal Server Error",
+      }
+    );
   }
 }

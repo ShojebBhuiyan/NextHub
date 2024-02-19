@@ -41,16 +41,14 @@ export default function KeyForm() {
     startTransition(() => {
       setError(undefined);
 
-      addKey(userId!, values.publicKey, values.name)
-        .then((data) => {
-          if (data?.error) {
-            setError(data?.error);
-          }
-        })
-        .finally(() => {
+      addKey(userId!, values.publicKey, values.name).then((data) => {
+        if (data?.error) {
+          setError(data?.error);
+        } else {
           form.reset();
           router.refresh();
-        });
+        }
+      });
     });
   }
 
