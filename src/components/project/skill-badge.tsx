@@ -4,5 +4,5 @@ interface SkillBadgeProps {
   skill: string;
 }
 export default function SkillBadge({ skill }: SkillBadgeProps) {
-  return <Badge className="text-lg">{skill}</Badge>;
+  return <Badge className="text-lg shadow-md">{skill}</Badge>;
 }
