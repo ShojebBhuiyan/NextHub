@@ -11,7 +11,7 @@ export default function NavAuthSection() {
     <>
       {session ? (
         <>
-          <Link href={`/profile/${session.user?.id}`}>
+          <Link href={`/${session.user?.name}`}>
             <Button
               variant="outline"
               className="w-[8rem] text-lg text-primary border-primary border-2"
