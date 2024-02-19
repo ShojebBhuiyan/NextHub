@@ -4,12 +4,32 @@ const { exec } = require("child_process");
 const fs = require("fs");
 
 const app = express();
-const mappingFilePath = "/path/to/repos.map"; // Update this path to match your actual mapping file path
+const mappingFilePath = "/path/to/repos.map"; // Update this path to match your actual mapping file path for nginx
 
 app.use(express.json());
 app.use(cors());
 
 const PORT = 3000; // Define a port to listen on
+
+// Endpoint to handle adding SSH public keys
+app.post("/add-ssh-key", (req, res) => {
+  const { publicKey } = req.body;
+
+  // Directory where authorized keys are stored
+  const authorizedKeysPath = "/home/git/.ssh/authorized_keys"; // Adjust this path based on your server configuration
+
+  // Append the public key to the authorized keys file
+  fs.appendFile(authorizedKeysPath, publicKey + "\n", (err) => {
+    if (err) {
+      console.error("Error adding SSH public key:", err);
+      return res.status(500).json({ error: "Error adding SSH public key" });
+    }
+    console.log("SSH public key added successfully");
+    return res
+      .status(200)
+      .json({ message: "SSH public key added successfully" });
+  });
+});
 
 app.post("/repository/create", (req, res) => {
   const { username, email, repoName } = req.body;
