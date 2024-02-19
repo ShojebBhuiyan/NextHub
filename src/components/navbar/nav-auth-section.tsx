@@ -3,6 +3,22 @@
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import ProfileOptions from "./profile-options";
 
 export default function NavAuthSection() {
   const { data: session } = useSession();
@@ -10,25 +26,10 @@ export default function NavAuthSection() {
   return (
     <>
       {session ? (
-        <>
-          <Link href={`/${session.user?.name}`}>
-            <Button
-              variant="outline"
-              className="w-[8rem] text-lg text-primary border-primary border-2"
-            >
-              Profile
-            </Button>
-          </Link>
-          <Button
-            variant="outline"
-            className="w-[8rem] text-lg"
-            onClick={() => {
-              signOut();
-            }}
-          >
-            Sign out
-          </Button>
-        </>
+        <ProfileOptions
+          imageUrl={session.user?.image!}
+          name={session.user?.name!}
+        />
       ) : (
         <>
           <Link href={`/auth/login`}>

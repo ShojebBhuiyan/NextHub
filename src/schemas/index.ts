@@ -19,3 +19,12 @@ export const RegisterSchema = z.object({
     message: "Name is required",
   }),
 });
+
+export const KeySchema = z.object({
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
+  publicKey: z.string().min(1, {
+    message: "Public key is required",
+  }),
+});

@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import { useState, useTransition } from "react";
-import { register } from "@/actions/register";
+import { register } from "@/actions/auth/register";
 import FormSuccess from "@/components/form-success";
 import { useRouter } from "next/navigation";
 import { CardWrapper } from "@/components/auth/card-wrapper";

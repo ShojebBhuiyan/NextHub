@@ -16,8 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import { useState, useTransition } from "react";
-import { login } from "@/actions/login";
-import FormSuccess from "@/components/form-success";
+import { login } from "@/actions/auth/login";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 
 export function LoginForm() {
