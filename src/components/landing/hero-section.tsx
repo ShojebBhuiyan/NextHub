@@ -15,9 +15,10 @@ export default function HeroSection() {
               manage your repositories, and ship better code with ease.
             </p>
           </div>
+
           <Button
-            variant="link"
-            className="w-fit justify-self-center border-primary border-2"
+            type="button"
+            className=" justify-self-center w-fit text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
           >
             <Link href={"/explore"}>Explore Repos</Link>
           </Button>

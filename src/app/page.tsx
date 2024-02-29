@@ -1,4 +1,4 @@
-import Faq from "@/components/faq/faq";
+import Faq from "@/components/landing/faq";
 import FeatureSection from "@/components/landing/feature-section";
 import HeroSection from "@/components/landing/hero-section";
 
