@@ -1,13 +1,18 @@
 "use client";
 
 import { FileNode } from "@/types/file-node";
+import { File as FileIcon, Folder, FolderOpen } from "lucide-react";
 import { useState } from "react";
+import { Button } from "../ui/button";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface ExplorerProps {
-  fileTree: FileNode[];
+  fileTree: FileNode;
 }
 
 export default function Explorer({ fileTree }: ExplorerProps) {
+  console.log(fileTree);
+  // console.log(Array.isArray(fileTree.children));
   const [openDirectories, setOpenDirectories] = useState<string[]>([]);
 
   function toggleDirectory(name: string) {
@@ -18,33 +23,66 @@ export default function Explorer({ fileTree }: ExplorerProps) {
     }
   }
 
-  function renderFileNode(node: FileNode, index: number) {
-    const isOpen = openDirectories.includes(node.name);
-    const toggleIcon = isOpen ? "-" : "+";
+  function renderFileNode(node: FileNode, index: number, path: string = "") {
+    const newPath = path ? `${path}/${node.name}` : node.name;
 
+    const isOpen = openDirectories.includes(node.name);
+    console.log("Inside renderFileNode");
     return (
       <li key={index}>
         {node.type === "directory" ? (
           <div>
-            <strong onClick={() => toggleDirectory(node.name)}>
-              {toggleIcon} {node.name}
-            </strong>
+            <Button
+              variant={"ghost"}
+              className="flex gap-2"
+              onClick={() => toggleDirectory(node.name)}
+            >
+              {isOpen ? (
+                <>
+                  <FolderOpen className="text-primary" />
+                  <span className="text-primary">{node.name}</span>
+                </>
+              ) : (
+                <>
+                  <Folder />
+                  <span>{node.name}</span>
+                </>
+              )}
+            </Button>
             {isOpen && node.children && (
-              <ul>
-                {node.children.map((child, idx) => renderFileNode(child, idx))}
+              <ul className="pl-5" onClick={() => {}}>
+                {node.children.map((child, idx) =>
+                  renderFileNode(child, idx, newPath)
+                )}
               </ul>
             )}
           </div>
         ) : (
-          <span>{node.name}</span>
+          <div className="flex gap-2">
+            <Button
+              variant={"ghost"}
+              className="flex gap-2"
+              onClick={() => {
+                console.log(newPath);
+              }}
+            >
+              <FileIcon />
+              <span>{node.name}</span>
+            </Button>
+          </div>
         )}
       </li>
     );
   }
   return (
-    <div>
-      <h1>File Explorer</h1>
-      <ul>{fileTree.map((node, index) => renderFileNode(node, index))}</ul>
-    </div>
+    <ScrollArea>
+      <div className="container flex flex-col gap-5">
+        <ul>
+          {fileTree.children?.map((node, index) => renderFileNode(node, index))}
+        </ul>
+      </div>
+      <ScrollBar orientation="vertical" />
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 }

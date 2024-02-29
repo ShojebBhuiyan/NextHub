@@ -9,6 +9,8 @@ export default async function ProjectPage({
   const username = decodeURIComponent(params.profileId);
   const directory = await getProjectFiles(username, params.projectId);
 
+  console.log(directory);
+
   return (
     <div>
       <Explorer fileTree={directory!} />
