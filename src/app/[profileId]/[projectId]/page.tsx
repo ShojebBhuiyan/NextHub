@@ -1,5 +1,6 @@
 import { getProjectFiles } from "@/actions/project/get-project-files";
-import Explorer from "@/components/explorer/explorer";
+import RepoInfoController from "@/components/repo-info/repo-info-controller";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function ProjectPage({
   params,
@@ -12,8 +13,22 @@ export default async function ProjectPage({
   console.log(directory);
 
   return (
-    <div>
-      <Explorer fileTree={directory!} />
+    <div className="container">
+      <Tabs defaultValue="repo">
+        <TabsList>
+          <TabsTrigger value="repo">Repository</TabsTrigger>
+          <TabsTrigger value="chat">Chat</TabsTrigger>
+          <TabsTrigger value="whiteboard">Whiteboard</TabsTrigger>
+          <TabsTrigger value="history">History</TabsTrigger>
+        </TabsList>
+        <TabsContent value="repo" className="w-full">
+          <RepoInfoController
+            fileTree={directory!}
+            username={username}
+            projectId={params.projectId}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

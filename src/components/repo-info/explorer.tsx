@@ -8,9 +8,15 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface ExplorerProps {
   fileTree: FileNode;
+  selectedFile: string | null;
+  setSelectedFile: (file: string) => void;
 }
 
-export default function Explorer({ fileTree }: ExplorerProps) {
+export default function Explorer({
+  fileTree,
+  selectedFile,
+  setSelectedFile,
+}: ExplorerProps) {
   console.log(fileTree);
   // console.log(Array.isArray(fileTree.children));
   const [openDirectories, setOpenDirectories] = useState<string[]>([]);
@@ -64,6 +70,7 @@ export default function Explorer({ fileTree }: ExplorerProps) {
               className="flex gap-2"
               onClick={() => {
                 console.log(newPath);
+                setSelectedFile?.(newPath);
               }}
             >
               <FileIcon />
