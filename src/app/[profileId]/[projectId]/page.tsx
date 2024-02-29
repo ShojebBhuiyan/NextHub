@@ -1,4 +1,5 @@
 import { getProjectFiles } from "@/actions/project/get-project-files";
+import ProjectInstructions from "@/components/project/project-instructions";
 import RepoInfoController from "@/components/repo-info/repo-info-controller";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
