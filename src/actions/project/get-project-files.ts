@@ -7,7 +7,11 @@ export async function getProjectFiles(username: string, projectId: string) {
   try {
     const url = new URL(`${process.env.GIT_SERVER_ADDRESS}/repository`);
     const response = await fetch(
-      url + `?repositoryPath=~/git/${username}/${projectId}.git`,
+      url +
+        `?repositoryPath=~/git/${username.replace(
+          / /g,
+          "-"
+        )}/${projectId.replace(/ /g, ".")}.git`,
       {
         method: "GET",
         headers: {

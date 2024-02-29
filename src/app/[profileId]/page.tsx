@@ -1,4 +1,4 @@
-import ProfilePrjectListing from "@/components/project/profile-project-listings";
+import ProfileProjectListing from "@/components/project/profile-project-listings";
 
 export default function ProfilePage({
   params,
@@ -7,7 +7,7 @@ export default function ProfilePage({
 }) {
   return (
     <div>
-      <ProfilePrjectListing params={params} />
+      <ProfileProjectListing params={params} />
     </div>
   );
 }
