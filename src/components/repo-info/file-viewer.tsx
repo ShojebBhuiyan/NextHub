@@ -83,11 +83,9 @@ export default function FileViewer({
       ) : (
         <div>
           {!isImage && (
-            <SyntaxHighlighter
-              language="javascript"
-              children={contentInfo?.content?.toString()!}
-              showLineNumbers
-            />
+            <SyntaxHighlighter language="javascript" showLineNumbers>
+              {contentInfo?.content?.toString()!}
+            </SyntaxHighlighter>
           )}
           {isImage && (
             <Image
