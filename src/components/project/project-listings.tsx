@@ -20,6 +20,7 @@ export default async function ProjectListings() {
             username={project.user.name!}
             title={project.title}
             description={project.description}
+            stars={project.stars}
             imageUrl={project.user.image}
             skills={project.skills}
           />

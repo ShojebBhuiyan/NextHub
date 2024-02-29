@@ -27,6 +27,7 @@ export default async function ProfileProjectListing({
         {projects?.map((project) => (
           <ProfileCard
             username={username}
+            stars={project.stars}
             key={project.id}
             title={project.title}
             description={project.description}
