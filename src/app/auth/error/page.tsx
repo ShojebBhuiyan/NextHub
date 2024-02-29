@@ -3,5 +3,9 @@
 import { ErrorCard } from "@/components/auth/error-card";
 
 export default function AuthErrorPage() {
-  return <ErrorCard />;
+  return (
+    <div className="container h-[90vh] flex justify-center items-center">
+      <ErrorCard />
+    </div>
+  );
 }
