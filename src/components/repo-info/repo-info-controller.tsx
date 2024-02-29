@@ -18,7 +18,7 @@ export default function RepoInfoController({
 }: RepoInfoControllerProps) {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   return (
-    <div className="flex w-full">
+    <div className="flex gap-5 w-full">
       <Explorer
         fileTree={fileTree}
         selectedFile={selectedFile}

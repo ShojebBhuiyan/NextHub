@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { LightAsync as SyntaxHighlighter } from "react-syntax-highlighter";
 import Image from "next/image";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface FileViewerProps {
   selectedFile: string;
@@ -15,6 +16,7 @@ export default function FileViewer({
   repository,
 }: FileViewerProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [isImage, setIsImage] = useState(false);
   const [contentInfo, setContentInfo] = useState<{
     content: string;
     contentType: string;
@@ -24,7 +26,7 @@ export default function FileViewer({
   url.searchParams.append("repositoryPath", repository);
   url.searchParams.append("filePath", selectedFile);
 
-  console.log(contentInfo);
+  console.log(isImage);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -37,23 +39,32 @@ export default function FileViewer({
           },
         });
 
-        const type = response.headers.get("Content-type");
+        const type = response.headers.get("Content-type")?.split(" ")[0];
         console.log(type);
 
-        if (type === "text/plain" || "application/octet-stream") {
-          const data = await response.text();
-          // console.log(data);
-          setContentInfo({
-            content: data,
-            contentType: type!,
-          });
-        } else {
+        if (
+          type === "image/svg+xml;" ||
+          type === "image/jpeg;" ||
+          type === "image/png;" ||
+          type === "image/gif;" ||
+          type === "image/webp;"
+        ) {
           const data = await response.blob();
 
           setContentInfo({
             content: URL.createObjectURL(data),
             contentType: type!,
           });
+          setIsImage(true);
+        } else {
+          const data = await response.text();
+          // console.log(data);
+          setContentInfo({
+            content: data,
+            contentType: type!,
+          });
+
+          setIsImage(false);
         }
       } catch (error) {
         console.error(error);
@@ -66,25 +77,29 @@ export default function FileViewer({
     }
   }, [selectedFile]);
   return (
-    <div>
+    <ScrollArea className="max-h-[75vh] max-w-full">
       {isLoading ? (
-        <Skeleton />
+        <Skeleton className="w-full h-full" />
       ) : (
         <div>
-          {/* {contentInfo?.contentType === "text/plain" ||
-          "application/octet-stream" ? (
+          {!isImage && (
             <SyntaxHighlighter
+              language="javascript"
               children={contentInfo?.content?.toString()!}
               showLineNumbers
             />
-          ) : ( */}
-          <Image
-            src={contentInfo?.content as string}
-            alt="image"
-            layout="fill"
-          />
+          )}
+          {isImage && (
+            <Image
+              src={contentInfo?.content as string}
+              alt="image"
+              layout="fill"
+            />
+          )}
         </div>
       )}
-    </div>
+      <ScrollBar orientation="vertical" />
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 }

@@ -74,7 +74,11 @@ export default function Explorer({
               }}
             >
               <FileIcon />
-              <span>{node.name}</span>
+              {selectedFile === newPath ? (
+                <span className="text-green-500">{node.name}</span>
+              ) : (
+                <span>{node.name}</span>
+              )}
             </Button>
           </div>
         )}
@@ -82,7 +86,7 @@ export default function Explorer({
     );
   }
   return (
-    <ScrollArea>
+    <ScrollArea className="min-h-[50vh] max-h-[75vh] min-w-[30vh]">
       <div className="container flex flex-col gap-5">
         <ul>
           {fileTree.children?.map((node, index) => renderFileNode(node, index))}
