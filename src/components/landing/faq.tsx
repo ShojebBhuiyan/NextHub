@@ -67,8 +67,8 @@ export default function Faq() {
   return (
     <>
       <main className=" relative px-[25px] xl:px-[280px] font-personal bg-gradient-to-b from-[#FFFFFF] to-[#FFFFFF] h-full flex justify-center">
-        <div className="shadow-[0px_26px_47px_-7px_rgba(0,0,0,0.45)] relative xl:overflow-hidden xl:flex xl:items-center h-[490px] mt-[145px]   flex flex-col items-center bg-white w-[700px] px-[25px] rounded-3xl">
-          <div className="xl:w-[600px] xl:ml-[20px]  w-full">
+        <div className="shadow-[0px_26px_47px_-7px_rgba(0,0,0,0.45)] relative xl:overflow-hidden xl:flex xl:items-center h-[490px] xl:h-[510px] mt-[145px] xl:mt-[130px]  flex flex-col items-center bg-white w-half px-[25px] rounded-3xl">
+          <div className="xl:w-[350px] xl:mr-[70px]  w-full">
             <h1 className="text-4xl text-center xl:text-left xl:text-5xl text-primary font-bold mb-[20px] xl:mb-[10px] mt-[50px] xl:mt-[72px]">
               FAQ
             </h1>
