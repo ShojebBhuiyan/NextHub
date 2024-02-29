@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 export async function createProject(
   userId: string,
   username: string,
+  email: string,
   title: string,
   description: string,
   skills: string[]
@@ -30,7 +31,7 @@ export async function createProject(
     const res = await fetch(url, {
       body: JSON.stringify({
         username: username.replace(/ /g, "-"),
-        email: "",
+        email,
         repoName: title.replace(/ /g, "-"),
       }),
       method: "POST",

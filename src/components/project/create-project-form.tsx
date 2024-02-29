@@ -45,6 +45,7 @@ export default function CreateProjectForm() {
       createProject(
         user.id!,
         user.name!,
+        user.email!,
         values.title,
         values.description,
         values.skills
