@@ -42,7 +42,7 @@ export default function ProfileCard({
           >
             {title}
           </Link>
-          <div className="bg-primary rounded-lg text-white font-normal p-2 flex items-center gap-2">
+          <div className="bg-primary rounded-lg text-xl text-white font-normal p-2 flex items-center gap-2">
             <Star />
             <span>{stars}</span>
           </div>

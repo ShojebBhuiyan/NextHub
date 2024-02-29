@@ -39,7 +39,7 @@ export default function ProjectCard({
               {title}
             </Link>
           </div>
-          <div className="bg-primary rounded-lg text-white font-normal p-2 flex items-center gap-2">
+          <div className="bg-primary text-xl rounded-lg text-white font-normal p-2 flex items-center gap-2">
             <Star />
             <span>{stars}</span>
           </div>
