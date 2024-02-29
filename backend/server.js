@@ -2,14 +2,24 @@ const express = require("express");
 const cors = require("cors");
 const { exec } = require("child_process");
 const fs = require("fs");
+const parseFilesPath = require("./parse-file-path");
+const simpleGit = require("simple-git");
+simpleGit().clean(simpleGit.CleanOptions.FORCE);
 
+// Create an Express application
 const app = express();
-const mappingFilePath = "/path/to/repos.map"; // Update this path to match your actual mapping file path for nginx
+// const mappingFilePath = '/etc/nginx/repos.map'; // Update this path to match your actual mapping file path
 
 app.use(express.json());
 app.use(cors());
 
 const PORT = 3000; // Define a port to listen on
+
+// Define a sample route
+app.get("/", (req, res) => {
+  console.log("Hello");
+  res.send("Hello, world! This is a simple Express backend.");
+});
 
 // Endpoint to handle adding SSH public keys
 app.post("/add-ssh-key", (req, res) => {
@@ -33,112 +43,100 @@ app.post("/add-ssh-key", (req, res) => {
 
 app.post("/repository/create", (req, res) => {
   const { username, email, repoName } = req.body;
-  const repoPath = `/srv/git/${username}/${repoName}.git`;
+  const repoPath = `~/git/${username}/${repoName}.git`;
+
+  exec(`sudo git init --bare ${repoPath}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return res.status(500).json({ error: "Could not create repository" });
+    }
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
+
+    exec(`sudo chown -R git:git ${repoPath}`);
+
+    return res.status(200).json({ message: "Repository created successfully" });
+  });
+});
+
+app.get("/repository", (req, res) => {
+  const repositoryPath = req.query.repositoryPath;
+  if (!repositoryPath) {
+    return res.status(400).send("Repository path is required");
+  }
 
   exec(
-    `cd /srv/git && sudo git init --bare ${repoPath}`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        return res.status(500).json({ error: "Could not create repository" });
+    `cd ${repositoryPath} && git ls-tree --full-tree -r main | awk '{print $4}'`,
+    (err, stdout) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Error fetching Git repository info.");
       }
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
 
-      // Set the Git user configuration
-      exec(
-        `cd ${repoPath} && git config user.name "${username}" && git config user.email "${email}"`,
-        (configError, configStdout, configStderr) => {
-          if (configError) {
-            console.error(`Git config error: ${configError}`);
-            res.status(500).send("Error configuring Git user");
-            return;
-          }
-        }
-      );
+      const entries = stdout.trim().split("\n");
 
-      // Set safe repo
-      exec(
-        `git config --global --add safe.directory ${repoPath}`,
-        (configError, configStdout, configStderr) => {
-          if (configError) {
-            console.error(`Git config error: ${configError}`);
-            res.status(500).send("Error configuring safe repo!");
-            return;
-          }
-        }
-      );
+      const directory = parseFilesPath(entries);
 
-      const mappingEntry = `${username}/${repoName}    ${repoPath};\n`;
-      fs.appendFile(mappingFilePath, mappingEntry, (err) => {
-        if (err) {
-          console.error(`Error updating mapping file: ${err.message}`);
-          return res.status(500).json({ error: "Error updating mapping file" });
-        }
-        console.log(`Mapping file updated with new entry: ${mappingEntry}`);
-      });
+      console.log(directory);
 
-      return res
-        .status(200)
-        .json({ message: "Repository created successfully" });
+      res.json(directory);
     }
   );
 });
 
-// Function to recursively retrieve directory structure
-function getDirectoryStructure(path) {
-  return new Promise((resolve, reject) => {
-    exec(`cd ${repoPath} && git ls-files --stage`, (error, stdout, stderr) => {
-      if (error || stderr) {
-        reject(error || stderr);
-        return;
-      }
+app.get("/repository/file", async (req, res) => {
+  try {
+    const filePath = req.query.filePath;
+    const repoPath = req.query.repositoryPath;
 
-      const files = stdout
-        .split('\n')
-        .filter(Boolean)
-        .map(line => {
-            const [fileMode, , , fileName] = line.split(/\s+/);
-            return { fileMode, fileName };
-        });
+    console.log(repoPath);
 
-      const root = { id: "1", name: "root", isFolder: true, items: [] };
-      const structure = { "": root };
+    console.log(filePath);
 
-      files.forEach(({ fileName }) => {
-        const pathItems = fileName.split("/");
-        let currentPath = "";
-        pathItems.forEach(item => {
-            currentPath += item;
-            if (!structure[currentPath]) {
-                structure[currentPath] = {
-                    id: Math.random().toString(36).substr(2, 9),
-                    name: item,
-                    isFolder: true,
-                    items: []
-                };
-                structure[currentPath.substr(0, currentPath.length - item.length)]?.items.push(structure[currentPath]);
-            }
-            currentPath += "/";
-        });
-      });
+    const git = simpleGit({ baseDir: repoPath });
 
-      resolve(root);
-    });
-  });
-}
+    console.log("Inside repo");
 
-// Endpoint to retrieve directory structure
-app.get('/repository/create', async (req, res) => {
-    try {
-        const directoryStructure = await getDirectoryStructure(repoPath);
-        res.json(directoryStructure);
-    } catch (error) {
-        console.error(`Error getting directory structure: ${error}`);
-        res.status(500).send('Internal Server Error');
-    }
+    // Fetch the file from the repository
+    const content = await git.show(["HEAD:" + filePath]);
+
+    console.log(content);
+
+    // Set Content-Type header based on file extension
+    const contentType = getContentType(filePath);
+    console.log(contentType);
+    res.set("Content-Type", contentType);
+
+    // Send the content of the file
+    res.send(content);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
+function getContentType(filePath) {
+  // Add more mime types as needed
+  const mimeTypes = {
+    ".txt": "text/plain",
+    ".html": "text/html",
+    ".css": "text/css",
+    ".js": "application/javascript",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".jfif": "image/jpeg",
+    ".pjpeg": "image/jpeg",
+    ".pjp": "image/jpeg",
+    ".webp": "image/webp",
+    ".gif": "image/gif",
+    ".png": "image/png",
+    ".svg": "image/svg+xml",
+  };
+
+  const extension = "." + filePath.split(".").pop();
+  console.log(extension);
+  return mimeTypes[extension] || "application/octet-stream";
+}
 
 // Start the server
 app.listen(PORT, () => {
