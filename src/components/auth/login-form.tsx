@@ -18,11 +18,12 @@ import FormError from "@/components/form-error";
 import { useState, useTransition } from "react";
 import { login } from "@/actions/auth/login";
 import { CardWrapper } from "@/components/auth/card-wrapper";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
-
+  const router = useRouter();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -39,6 +40,7 @@ export function LoginForm() {
         if (data?.error) {
           setError(data?.error);
         }
+        router.push("/dashboard");
       });
     });
   }

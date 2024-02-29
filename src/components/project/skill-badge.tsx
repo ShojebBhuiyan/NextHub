@@ -7,7 +7,7 @@ interface SkillBadgeProps {
 export default function SkillBadge({ skill }: SkillBadgeProps) {
   return (
     <Link href={`/explore/${skill}`}>
-      <Badge className="text-lg shadow-md border-purple-900">{skill}</Badge>;
+      <Badge className="text-lg shadow-md border-purple-900">{skill}</Badge>
     </Link>
   );
 }

@@ -28,7 +28,7 @@ export default function ProfileOptions({
           <Button variant="ghost" className="rounded-full w-fit">
             <Avatar>
               <AvatarImage src={imageUrl} alt="avatar" />
-              <AvatarFallback>{name}</AvatarFallback>
+              <AvatarFallback>{name[0]}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -39,6 +39,11 @@ export default function ProfileOptions({
             <DropdownMenuItem>
               <Link href={`/${name}`} className="w-full">
                 Profile
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/explore`} className="w-full">
+                Explore
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>

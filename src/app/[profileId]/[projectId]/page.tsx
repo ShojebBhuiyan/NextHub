@@ -38,6 +38,7 @@ export default async function ProjectPage({
         </Tabs>
         <StarButton stars={project?.stars!} projectId={project?.id!} />
       </div>
+      <p className="text-lg">{project?.description}</p>
     </div>
   );
 }
