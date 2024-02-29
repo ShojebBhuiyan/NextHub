@@ -77,7 +77,7 @@ export default function FileViewer({
     }
   }, [selectedFile]);
   return (
-    <ScrollArea className="max-h-[75vh] max-w-full">
+    <ScrollArea className="max-h-[75vh] w-full">
       {isLoading ? (
         <Skeleton className="w-full h-full" />
       ) : (
