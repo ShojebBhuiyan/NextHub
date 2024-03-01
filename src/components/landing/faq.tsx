@@ -17,42 +17,34 @@ import { Button } from "../ui/button";
 export default function Faq() {
   const content = [
     {
-      button: "What is it?",
+      button: "What is Nexthub?",
       panel:
-        "It is a free collaborative app whre we can version control our projects,connect with our contributors and much more.",
+        "Nexthub is a free collaborative app where you can version control your projects, connect with other contributors and much more.",
       uuid: "id1",
     },
     {
       button: "How can I get started?",
       panel: (
         <>
-          First, you may need to{" "}
-          <Link href="/auth/register">
-            <Button
-              variant="outline"
-              className="w-[8rem] h-[2rem] text-lg text-primary border-primary border-2"
-            >
-              Register
-            </Button>
-          </Link>{" "}
-          and then proceed from there.
+          {"First, you will need to "}
+          <Link className="underline" href="/auth/register">
+            {"Register"}
+          </Link>
+          {" and then proceed from there."}
         </>
       ),
       uuid: "id2",
     },
     {
       button: "How do I create a repo?",
-      panel: "dummy text",
+      panel:
+        "Go to your profile and you will see a button to create a new repo.",
       uuid: "id3",
     },
     {
-      button: "How Can I chat with my project contributors?",
-      panel: "dummy text",
-      uuid: "id4",
-    },
-    {
       button: "Do you provide additional support?",
-      panel: "dummy text",
+      panel:
+        "There is an AI assistant inside every project repo to help you with anything.",
       uuid: "id5",
     },
   ];
