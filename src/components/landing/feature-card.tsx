@@ -29,11 +29,9 @@ export default function FeatureCard({
         >
           {description}
         </CardItem>
-        <CardItem
-          translateZ="100"
-          className="w-full mt-4"
-          children={undefined}
-        ></CardItem>
+        <CardItem translateZ="100" className="w-full mt-4">
+          {undefined}
+        </CardItem>
         <div className="flex justify-between items-center mt-20"></div>
       </CardBody>
     </CardContainer>
