@@ -7,7 +7,10 @@ export default function Navbar() {
       <Link className="font-bold text-4xl" href="/">
         NextHub
       </Link>
-      <div className="flex justify-end gap-x-6">
+      <div className="flex justify-end items-center gap-x-6">
+        <Link href={"/explore"} className="text-2xl font-normal">
+          Explore
+        </Link>
         <NavAuthSection />
       </div>
     </nav>
