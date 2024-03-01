@@ -6,7 +6,7 @@ export default function ProfilePage({
   params: { profileId: string };
 }) {
   return (
-    <div>
+    <div className="flex flex-col gap-5">
       <ProfileProjectListing params={params} />
     </div>
   );
